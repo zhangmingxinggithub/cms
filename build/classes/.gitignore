@@ -1,2 +1,7 @@
-/Test.class
 /controller/
+/dao/
+/model/
+/service/
+/test/
+/util/
+/Test.class
