@@ -137,6 +137,29 @@ public class PageUtil {
 	public void setPageTail(Integer pageTail) {
 		this.pageTail = pageTail;
 	}
+	
+	
+	public static void pageConfig(PageParams pageParams, PageUtil pageUtil)
+	{
+		if (pageParams.getPage() != null) {
+			try {
+				pageUtil.setPageId(Integer.parseInt(pageParams.getPage())); // 当前页
+			} catch (Exception e) {
+			}
+		}
+		if (pageParams.getRows() != null) {
+			try {
+				pageUtil.setPageSize(Integer.parseInt(pageParams.getRows()));// 显示X条
+			} catch (Exception e) {
+			}
+		}
+		if (pageParams.getSort() != null) {
+			try {
+				pageUtil.setOrderByCondition(pageParams.getSort()); // 排序字段名称
+			} catch (Exception e) {
+			}
+		}
+	}
 
 	public static void main(String[] args) {
 		PageUtil pageUtil = new PageUtil();
