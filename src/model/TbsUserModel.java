@@ -27,6 +27,9 @@ public class TbsUserModel extends BaseModel {
     private Timestamp quit_time; // 离职日期；
     private Timestamp lastlogin_time; //最后登录时间
     
+    private String dept_id;  // 部门id
+    private String dept_name;  // 部门名称
+    
     
     
 	
@@ -351,6 +354,18 @@ public class TbsUserModel extends BaseModel {
 	}
 	public void setLastlogin_time(Timestamp lastloginTime) {
 		lastlogin_time = lastloginTime;
+	}
+	public String getDept_id() {
+		return dept_id;
+	}
+	public void setDept_id(String deptId) {
+		dept_id = deptId;
+	}
+	public String getDept_name() {
+		return dept_name;
+	}
+	public void setDept_name(String deptName) {
+		dept_name = deptName;
 	}
 	
 	///////////////////////////增加/////////////////////////
