@@ -3,3 +3,16 @@
 /sql20141206/
 /zsql20141206/
 /zsql/
+/back.sql
+/dao/
+/dataSourceAll.back
+/dataSourceConfig.properties
+/ehcache.xml
+/log4j.properties
+/model/
+/remark.txt
+/service/
+/spring-mvc.xml
+/spring-mybatis.xml
+/test/
+/util/
