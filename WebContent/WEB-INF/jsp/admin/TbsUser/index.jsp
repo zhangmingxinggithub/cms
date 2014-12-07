@@ -2,6 +2,62 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <script type="text/javascript">
+
+var sid="";
+var sname="";
+var dept_id=""
+function init(id,name){
+	if(id!="-1"){
+		sid=id;
+    	sname=name;
+	}else{
+    }
+	
+}
+
+function selectDept()
+{
+	$('<div/>').dialog({
+	    title: '选择部门',
+	    width: 700,
+	    height: 600,
+	    closed: false,
+	    cache: false,
+	    href: '${demoPath}admin/common/selectDept.html',
+	    modal: true	,		
+	    buttons : [ {
+			text : '确定',
+			iconCls : 'icon-ok',
+			handler : function() {
+				setDept();
+				$(this).closest('.window-body').dialog('destroy');
+			}
+		}, {
+			text : '取消',
+			iconCls : 'icon-cancel',
+			handler : function() {
+				$(this).closest('.window-body').dialog('destroy');
+			}
+		} ],
+		onClose : function() {
+			$(this).dialog('destroy');
+		}
+	});
+}
+function setDept()
+{
+	var rows = $('#TbsDepartMentGrid').datagrid('getSelections');
+	if(rows.length == 1)
+	{
+		$('#dept_name').val(rows[0].name);
+		dept_id = rows[0].id;
+	}
+	else
+	{
+		dept_id = ""
+	}
+}
+
 	//Add and Edit
 	function tbsUserGridAddAndEdit(title, url, type) {
 		if (type == 1) { //edit
@@ -147,50 +203,6 @@
 	    });
 	}
 	
-	//高级搜索 del row
-	function tbsUserSearchRemove(curr) {
-		if ($(curr).closest('table').find('tr').size() > 2) {
-			$(curr).closest('tr').remove();
-		} else {
-			alert('该行不允许删除');
-		}
-	}
-	
-	//高级查询
-	function tbsUserSearch() {
-		$('<div/>').dialog({
-			href : '${demoPath}admin/TbsUser/searchDlg.html',
-			modal : true,
-			title : '高级查询',
-			top : 120,
-			width : 480,
-			buttons : [ {
-				text : '增加一行',
-				iconCls : 'icon-add',
-				handler : function() {
-					var currObj = $(this).closest('.panel').find('table');
-					currObj.find('tr:last').clone().appendTo(currObj);
-					//currObj.find('tr:last td *[disabled]').removeAttr("disabled");
-				}
-			}, {
-				text : '确定',
-				iconCls : 'icon-ok',
-				handler : function() {
-					$('#tbsUserGrid').datagrid('options').pageNumber=1;
-					$('#tbsUserGrid').datagrid('reload',serializeObjectEx($('#tbsUserSearchFm')));
-				}
-			}, {
-				text : '取消',
-				iconCls : 'icon-cancel',
-				handler : function() {
-					$(this).closest('.window-body').dialog('destroy');
-				}
-			} ],
-			onClose : function() {
-				$(this).dialog('destroy');
-			}
-		});
-	}
 	
 	//导出
 	function tbsUserGridExport(){
@@ -233,14 +245,15 @@
 			}
 		});
 	}
-	
-</script>
-    
+	$(function(){
+	    $('#btn').bind('click', function(){
+			var username = $('#username').val();
+			var obj = {"username":username,searchType:1,"dept_id":dept_id}
+			$('#tbsUserGrid').datagrid('options').pageNumber=1;
+			$('#tbsUserGrid').datagrid('reload',obj);
+	    });
 
-	<!-- 中  datagrid-->
-    <div data-options="region:'center',border : false">
-		<!-- datagrid toolbar -->
-		<table id="tbsUserGrid"  class="easyui-datagrid"  data-options="	
+	    $('#tbsUserGrid').datagrid({
 			url:'${demoPath}admin/TbsUser/data.html',
 			frozenColumns : [ [ {field : 'ck',checkbox : true}] ],
 			columns:[ [  
@@ -249,6 +262,10 @@
 			    return value;
 			}},			
 
+			{field:'dept_id',title:'部门',hidden:false,width:'135',halign:'center',align:'center',sortable:'true', formatter: function(value,row,index){
+			    return value;
+			}},	
+			
 			{field:'username',title:'用户名',hidden:false,width:'135',halign:'center',align:'center',sortable:'true', formatter: function(value,row,index){
 			    return value;
 			}},			
@@ -260,26 +277,6 @@
 			{field:'createTime',title:'时间',hidden:false,width:'135',halign:'center',align:'center',sortable:'true', formatter: function(value,row,index){
 			    return value;
 			}},			
-
-			//{field:'ip',title:'ip',hidden:false,width:'135',halign:'center',align:'center',sortable:'true', formatter: function(value,row,index){
-			   // return value;
-			//}},			
-
-			//{field:'count',title:'次数',hidden:false,width:'135',halign:'center',align:'center',sortable:'true', formatter: function(value,row,index){
-			    //return value;
-			//}},			
-
-			//{field:'isLock',title:'锁定',hidden:false,width:'135',halign:'center',align:'center',sortable:'true', formatter: function(value,row,index){
-			 //  return value;
-			//}},			
-
-			//{field:'lockTime',title:'锁定时间',hidden:false,width:'135',halign:'center',align:'center',sortable:'true', formatter: function(value,row,index){
-			   // return value;
-			//}},			
-
-			//{field:'failCount',title:'失败次数',hidden:false,width:'135',halign:'center',align:'center',sortable:'true', formatter: function(value,row,index){
-			   // return value;
-			//}},			
 
 			{field:'isAdmin',title:'权限类型',hidden:false,width:'135',halign:'center',align:'center',sortable:'true', formatter: function(value,row,index){
 				if(value=='0'){
@@ -305,50 +302,99 @@
 			}}		
 			] ],
 			toolbar:'#tbsUserGridToolbar'
-		"/>
-		
-		<!-- datagrid toolbar -->
-		<div id="tbsUserGridToolbar">
-			<div style="margin-bottom:5px">
-				<c:forEach items="${buttons}" var="button">
+
+	    });
+
+
+	    $('#tbsUserGrid').datagrid('load', {});
+	});
+</script>
+
+<div class="easyui-layout" style="width: 100%; height: 100%;">
+	<div data-options="region:'west',split:true,isonCls:'icon-save',
+		                 tools:[{
+		                     iconCls : 'icon-reload',
+		                     handler : function() {
+		                        $('#depttree').tree('reload');
+		                     }
+		                 },{
+		                    iconCls : 'icon-redo',
+		                    handler : function() {
+		                       var node = $('#depttree').tree('getSelected');
+		                       if(node){
+		                          $('#depttree').tree('expandAll', node.target);
+		                       }else{
+		                          $('#depttree').tree('expandAll');
+		                       }
+		                    }
+		                 },{
+		                    iconCls : 'icon-undo',
+		                    handler : function() {
+			                    var node = $('#depttree').tree('getSelected');
+			                    if (node) {
+			                      $('#depttree').tree('collapseAll', node.target);
+			                    }else{
+			                      $('#depttree').tree('collapseAll');
+			                    }
+		                    }
+		                 }]" title="部门" style="width:194px;">
+	     <div title="test">
+		             <ul id="depttree" class="easyui-tree" data-options="
+							url:'${demoPath}/admin/TbsDepartMent/json.html', 
+							onSelect : function(node) {
+							   init(node.id,node.text);
+							}
+						" />
+		             
+		             </div>
+	</div>
+	<div data-options="region:'center',title:'用户管理',iconCls:'icon-ok'">
+
+		<!-- 查询条件-->
+		<div id="search" class="easyui-panel" title="查询"
+			style="padding: 10px;" data-options="collapsible:true">
+			<table>
+				<tr>
+					<td>
+						<label>
+							部门:
+						</label>
+					</td>
+					<td>
+						<input id="dept_name" name="dept_name" class="easyui-validatebox"
+							type="text" onClick="selectDept();" />
+					</td>
+
+					<td>
+						<label>
+							用户名:
+						</label>
+					</td>
+					<td>
+						<input id="username" name="username" class="easyui-validatebox"
+							type="text" />
+					</td>
+					<td>
+						<a id="btn" href="javascript:void(0)" class="easyui-linkbutton"
+							data-options="iconCls:'icon-search'">查询</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<!-- 数据列表-->
+		<div data-options="region:'center',border : false">
+
+			<!-- 工具按钮 -->
+			<div id="tbsUserGridToolbar">
+				<div style="margin-bottom: 5px">
+					<c:forEach items="${buttons}" var="button">
 			         ${button}
 			    </c:forEach>
-				<%-- 
-				<a href="javascript:void(0)" onclick="javascript:tbsUserGridAddAndEdit('添加  tbsUser','${demoPath}admin/TbsUser/add.html',0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">添加</a>
-				<a href="javascript:void(0)" onclick="javascript:tbsUserGridAddAndEdit('修改  tbsUser','${demoPath}admin/TbsUser/save.html',1)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'">编辑 </a>  
-				<a href="javascript:void(0)" onclick="javascript:tbsUserGridDel()" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">删除</a>
-				<a href="javascript:void(0)" onclick="javascript:tbsUserGridReload()" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">刷新</a>
-				<a href="javascript:void(0)" onclick="javascript:tbsUserGridExport()" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">导出</a>
-				<a href="javascript:void(0)" onclick="javascript:tbsUserGridImport()" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">导入</a>
-				
-				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-undo'">后退</a>
-				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-redo'">前进</a>
-				--%>
-				<!-- tbsUserGridToolbarSearch -->
-				<input class="easyui-searchbox" data-options="
-					menu :'#tbsUserGridToolbarSearch',
-					prompt :'模糊查询',
-					searcher : function(value,name){
-						var str='{searchType:1,'+name+':\''+value+'\'}';
-				        var obj = eval('('+str+')');
-				        $('#tbsUserGrid').datagrid('options').pageNumber=1;
-						$('#tbsUserGrid').datagrid('reload',obj);
-					}
-				"/>
-				<div id="tbsUserGridToolbarSearch">
-				  <div name="username">用户名</div>
-					<!--  <div name="id">主键</div> 
-				     <div name="password">密码</div> 
-					<div name="createTime">时间</div>
-					<div name="count">次数</div>
-					<div name="isLock">锁定</div>
-					<div name="lockTime">锁定时间</div>
-					<div name="failCount">失败次数</div>
-					-->
-					<div name="isAdmin">权限类型</div>
 				</div>
-<!-- 				<a href="javascript:void(0)" onclick="javascript:tbsUserSearch()" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-search'">高级查询</a>
- -->			</div>
+			</div>
+			<!-- 数据列表 -->
+			<table id="tbsUserGrid"></table>
 		</div>
 	</div>
-<!--  <div>-->
+</div>
