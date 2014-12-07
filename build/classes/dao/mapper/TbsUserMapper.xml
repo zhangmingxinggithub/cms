@@ -35,6 +35,7 @@
 	<result column="social_num" property="social_num"/>
 	<result column="account_num" property="account_num"/>
 	<result column="status" property="status"/>
+	<result column="dept_id" property="dept_id"/>
 </resultMap>
 
 <!-- 所有条件分页 -->
@@ -67,7 +68,7 @@
 <sql id="tbaleColumns">
 	<trim suffix="" suffixOverrides=",">
 		id,username,password,createTime,ip,count,isLock,
-		lockTime,failCount,isAdmin,sex,telephone,address,family_tel,birth_place,social_num,account_num,status
+		lockTime,failCount,isAdmin,sex,telephone,address,family_tel,birth_place,social_num,account_num,status,dept_id
 	</trim>
 </sql>
 
@@ -128,6 +129,9 @@
 		</if>
 		<if test="status != null " >
 			status,
+		</if>
+		<if test="dept_id != null " >
+			dept_id,
 		</if>
     </trim>
 </sql>
@@ -190,6 +194,9 @@
 		<if test="status != null " >
 			#{status},
 		</if>
+		<if test="dept_id != null " >
+			#{dept_id},
+		</if>
     </trim>
 </sql>
 
@@ -251,6 +258,9 @@
 		<if test="status != null " >
 			status = #{status},
 		</if>
+		<if test="dept_id != null " >
+			dept_id = #{dept_id},
+		</if>
     </trim>
 </sql>
 
@@ -306,6 +316,9 @@
 		</if>
 		<if test="status != null " >
 			and status = #{status},
+		</if>
+		<if test="dept_id != null " >
+			and dept_id = #{dept_id},
 		</if>
 	</trim>
 </sql>
@@ -367,6 +380,9 @@
 		</if>
 		<if test="status != null " >
 			and status = #{status},
+		</if>
+		<if test="dept_id != null " >
+			and dept_id = #{dept_id},
 		</if>
 	</trim>
 </sql>
