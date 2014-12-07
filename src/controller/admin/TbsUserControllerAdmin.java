@@ -1,39 +1,46 @@
 package controller.admin;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import model.TbsUserModel;
-import service.TbsUserService;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
+import model.TbsDepartMentModel;
+import model.TbsRoleUserModel;
+import model.TbsUserModel;
+
 import org.apache.log4j.Logger;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.alibaba.fastjson.JSON;
+
+import service.TbsDepartMentService;
+import service.TbsRoleUserService;
+import service.TbsUserService;
+import util.core.ExcelUtil;
+import util.core.MethodUtil;
+import util.core.PageParams;
+import util.core.PageUtil;
+import util.json.JsonUtil;
 import util.spring.MyTimestampPropertyEdit;
 import util.spring.SessionUtil;
-import util.core.MethodUtil;
-import util.core.ExcelUtil;
-import util.core.PageParams;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import org.apache.poi.ss.usermodel.Workbook;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.NameFilter;
-import model.TbsRoleUserModel;
-import service.TbsRoleUserService;
 @Controller
 @RequestMapping("/admin/TbsUser/")
 public class TbsUserControllerAdmin extends BaseController{	private final static Logger log= Logger.getLogger(TbsUserControllerAdmin.class);
@@ -46,7 +53,8 @@ public class TbsUserControllerAdmin extends BaseController{	private final static
 	@Autowired(required=false) //自动注入，不需要生成set方法了，required=false表示没有实现类，也不会报错。
 	private TbsUserService<TbsUserModel> tbsUserService; 
 	
-	
+	@Autowired(required=false) //自动注入，不需要生成set方法了，required=false表示没有实现类，也不会报错。
+	private TbsDepartMentService<TbsDepartMentModel> departMentService; 
 	
 	@InitBinder//必须有一个参数WebDataBinder 日期类型装换
 	public void initBinder(WebDataBinder binder) {
@@ -262,85 +270,35 @@ public class TbsUserControllerAdmin extends BaseController{	private final static
 	@RequestMapping("data.html")
 	@ResponseBody
 	public String data(PageParams pageParams, TbsUserModel tbsUserModel) throws Exception {
-		System.out.println("pageParams:" + pageParams + "|tbsUserModel:" + tbsUserModel);
+		// 构建查询条件
 		tbsUserModel.getPageUtil().setPaging(true);
-		String result = "[]";
-		if (pageParams.getPage() != null) {
-			try {
-				tbsUserModel.getPageUtil().setPageId(Integer.parseInt(pageParams.getPage())); // 当前页
-			} catch (Exception e) {
-				log.error(e);
-			}
-		}
-		if (pageParams.getRows() != null) {
-			try {
-				tbsUserModel.getPageUtil().setPageSize(Integer.parseInt(pageParams.getRows()));// 显示X条
-			} catch (Exception e) {
-				log.error(e);
-			}
-		}
-		if (pageParams.getSort() != null) {
-			try {
-				tbsUserModel.getPageUtil().setOrderByCondition(pageParams.getSort()); // 排序字段名称
-			} catch (Exception e) {
-				log.error(e);
-			}
-		}
+		String result = "";
+		PageUtil.pageConfig(pageParams, tbsUserModel.getPageUtil());
 
-		// tbsUserModel.getPageUtil().setOrderDirection(true); //true false 表示 正序与倒序
-        String str="";
-        String suffix = "}";
-        if(pageParams.getGridName() != null){
-        	str="[";
-        	suffix="]}";
-        }
-		List<TbsUserModel> listTbsUserModel = null;
-		StringBuilder center = new StringBuilder();
-
+		// 查询结果
+		List<TbsUserModel> listTbsUserModel = new ArrayList<TbsUserModel>();
 		if (pageParams.getSearchType() != null) {
 			if (pageParams.getSearchType().equals("1")) { // 模糊搜索
 				tbsUserModel.getPageUtil().setLike(true);
 				listTbsUserModel = tbsUserService.selectByModel(tbsUserModel);
-				center.append("{\"total\":\"" + tbsUserModel.getPageUtil().getRowCount() + "\",\"rows\":"+str);
-			} else {
-				StringBuffer sb = new StringBuffer(); // 高级查询
-				String[] searchColumnNameArray = pageParams.getSearchColumnNames().split("\\,");
-				String[] searchAndsArray = pageParams.getSearchAnds().split("\\,");
-				String[] searchConditionsArray = pageParams.getSearchConditions().split("\\,");
-				String[] searchValsArray = pageParams.getSearchVals().split("\\,");
-				System.out.println(Arrays.toString(searchColumnNameArray));
-				for (int i = 0; i < searchColumnNameArray.length; i++) {
-					if (searchColumnNameArray[i].trim().length() > 0 && searchConditionsArray[i].trim().length() > 0) {
-						if (i == 0) {
-							sb.append(searchColumnNameArray[i].trim() + " " + searchConditionsArray[i].trim() + " '" + searchValsArray[i].trim() + "'");
-						} else {
-							sb.append(" " + searchAndsArray[i].trim() + " " + searchColumnNameArray[i].trim() + " " + searchConditionsArray[i].trim() + " '" + searchValsArray[i].trim() + "'");
-						}
-					}
-				}
-				if (sb.length() > 0) {
-					System.out.println("searchCondition:" + sb.toString());
-					tbsUserModel.getPageUtil().setAndCondition(sb.toString());
-					listTbsUserModel = tbsUserService.selectByModel(tbsUserModel);
-					center.append("{\"total\":\"" + tbsUserModel.getPageUtil().getRowCount() + "\",\"rows\":"+str);
-				}
-			}
+			} 
 		} else {
 			if (pageParams.getGridName() == null) {
 				listTbsUserModel = tbsUserService.selectByModel(tbsUserModel);
-				center.append("{\"total\":\"" + tbsUserModel.getPageUtil().getRowCount() + "\",\"rows\":");
-				suffix = "}";
 			} else {
 			}
 		}
 
-		if (pageParams.getGridName() == null) { //datagrid
-			center.append(JSON.toJSONString(listTbsUserModel));
-		} else {
+		for(TbsUserModel bean:listTbsUserModel )
+		{
+			bean.setDept_name(departMentService.selectByPrimaryKey(bean.getDept_id()).getName());
 		}
-		center.append(suffix);
-		result = center.toString();
-		System.out.println("json:" + result);
+		
+		// 返回结果
+		Map<String,Object> res = new HashMap<String,Object>();
+		res.put("total",  tbsUserModel.getPageUtil().getRowCount());
+		res.put("rows", listTbsUserModel);
+		result = JSON.toJSONString(listTbsUserModel);
 		return result;
 	}
 	
