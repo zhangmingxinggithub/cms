@@ -6,7 +6,6 @@ public class Test {
           System.out.println("欧阳还是处男 哈哈");
           
           System.out.println("明显还是 哈哈");
-          System.out.println("明显还是 哈哈");
 	}
 
 }
