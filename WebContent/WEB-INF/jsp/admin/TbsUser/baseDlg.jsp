@@ -1,6 +1,49 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<script type="text/javascript">
+function selectDept()
+{
+	$('<div/>').dialog({
+	    title: '选择部门',
+	    width: 700,
+	    height: 600,
+	    closed: false,
+	    cache: false,
+	    href: '${demoPath}admin/common/selectDept.html',
+	    modal: true	,		
+	    buttons : [ {
+			text : '确定',
+			iconCls : 'icon-ok',
+			handler : function() {
+				setDept();
+				$(this).closest('.window-body').dialog('destroy');
+			}
+		}, {
+			text : '取消',
+			iconCls : 'icon-cancel',
+			handler : function() {
+				$(this).closest('.window-body').dialog('destroy');
+			}
+		} ],
+		onClose : function() {
+			$(this).dialog('destroy');
+		}
+	});
+}
+function setDept()
+{
+	var rows = $('#TbsDepartMentGrid').datagrid('getSelections');
+	if(rows.length == 1)
+	{
+		$('#dept').val(rows[0].name);
+		$('#dept_id').val(rows[0].id);
+	}
+	else
+	{
+	}
+}
+</script>
 <!-- 弹出框 tbsUserDlg -->
 <div id="tbsUserDlg">
 	<form id="tbsUserFm" method="post">
@@ -27,33 +70,7 @@
 				<input name="createTime"  class="easyui-datetimebox"/>
 				</td>
 	 		</tr>
-	        <!-- <tr>
-				<td><label> ip: </label></td>
-    			<td>
-				    <input name="ip" class="easyui-validatebox" type="text"/>
-				</td>
-
-				<td><label> 次数: </label></td>
-    			<td>
-				<input name="count" class="easyui-validatebox" type="text" />
-				</td>
-	 		</tr> -->
-	        <!-- <tr>
-				<td><label> 锁定: </label></td>
-    			<td >
-				<input name="isLock" class="easyui-validatebox" type="text" />
-				</td>
-
-				<td><label> 锁定时间: </label></td>
-    			<td >
-				<input name="lockTime"  class="easyui-datetimebox"/>
-				</td>
-	 		</tr> -->
 	        <tr>
-				<!-- <td><label> 失败次数: </label></td>
-    			<td >
-				<input name="failCount" class="easyui-validatebox" type="text" />
-				</td> -->
                 <td><label> 家庭地址: </label></td>
     			<td >
 				<input name="address" class="easyui-validatebox" type="text" />
@@ -111,7 +128,11 @@
 							<option value="2"  > 离职 </option>
 					</select>
 				</td>
-				
+				<td><label> 部门: </label></td>
+    			<td>
+    			     <input id="dept_id" name="dept_id" type="hidden"   />
+                     <input id="dept" name="dept_name" class="easyui-validatebox" type="text" onClick="selectDept();"  />
+				</td>
 				
 			</tr>
 
