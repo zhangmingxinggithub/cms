@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -314,6 +315,26 @@ public class JsonUtil {
 		} finally {
 			return json;
 		}
+	}
+	
+	
+	
+	public static String toJson(Map<String,Object> map){
+	    Set<String> keys = map.keySet();
+	    String key = "";
+	    String value = "";
+	    StringBuffer jsonBuffer = new StringBuffer();
+	    jsonBuffer.append("{");    
+	    for(Iterator<String> it = keys.iterator();it.hasNext();){
+	        key =  (String)it.next();
+	        value = map.get(key).toString();
+	        jsonBuffer.append(key+":"+value);
+	        if(it.hasNext()){
+	             jsonBuffer.append(",");
+	        }
+	    }
+	    jsonBuffer.append("}");
+	    return jsonBuffer.toString();
 	}
 	
 	

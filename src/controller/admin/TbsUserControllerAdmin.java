@@ -295,9 +295,9 @@ public class TbsUserControllerAdmin extends BaseController{	private final static
 		
 		// 返回结果
 		Map<String,Object> res = new HashMap<String,Object>();
-		res.put("total",  tbsUserModel.getPageUtil().getRowCount());
-		res.put("rows", listTbsUserModel);
-		result = JSON.toJSONString(listTbsUserModel);
+		res.put("\"total\"",  tbsUserModel.getPageUtil().getRowCount());
+		res.put("\"rows\"", JSON.toJSONString(listTbsUserModel));
+		result = JsonUtil.toJson(res);
 		return result;
 	}
 	
