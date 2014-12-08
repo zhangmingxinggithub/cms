@@ -309,26 +309,6 @@ function setDept()
 		                     handler : function() {
 		                        $('#depttree').tree('reload');
 		                     }
-		                 },{
-		                    iconCls : 'icon-redo',
-		                    handler : function() {
-		                       var node = $('#depttree').tree('getSelected');
-		                       if(node){
-		                          $('#depttree').tree('expandAll', node.target);
-		                       }else{
-		                          $('#depttree').tree('expandAll');
-		                       }
-		                    }
-		                 },{
-		                    iconCls : 'icon-undo',
-		                    handler : function() {
-			                    var node = $('#depttree').tree('getSelected');
-			                    if (node) {
-			                      $('#depttree').tree('collapseAll', node.target);
-			                    }else{
-			                      $('#depttree').tree('collapseAll');
-			                    }
-		                    }
 		                 }]" title="部门" style="width:194px;">
 	     <div title="test">
 		             <ul id="depttree" class="easyui-tree" data-options="
