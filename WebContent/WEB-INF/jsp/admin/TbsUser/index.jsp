@@ -302,24 +302,28 @@ function setDept()
 	});
 </script>
 
-<div class="easyui-layout" style="width: 100%; height: 100%;">
-	<div data-options="region:'west',split:true,isonCls:'icon-save',
-		                 tools:[{
-		                     iconCls : 'icon-reload',
-		                     handler : function() {
-		                        $('#depttree').tree('reload');
-		                     }
-		                 }]" title="部门" style="width:194px;">
-	     <div title="test">
-		             <ul id="depttree" class="easyui-tree" data-options="
-							url:'${demoPath}/admin/TbsDepartMent/json.html', 
-							onSelect : function(node) {
-							   init(node.id,node.text);
-							}
-						" />
-		             
-		             </div>
+    <!-- 部门树-->
+    <div class="easyui-layout" style="width: 100%; height: 100%;">
+		<div data-options="region:'west',split:true,isonCls:'icon-save',
+			                 tools:[{
+			                     iconCls : 'icon-reload',
+			                     handler : function() {
+			                        $('#depttree').tree('reload');
+			                     }
+			                 }]" title="部门" style="width:194px;">
+		     <div title="test">
+			             <ul id="depttree" class="easyui-tree" data-options="
+								url:'${demoPath}/admin/TbsDepartMent/json.html', 
+								onSelect : function(node) {
+								   init(node.id,node.text);
+								}
+							" />
+			             
+	    </div>
 	</div>
+	
+	
+	<!-- 用户管理-->
 	<div data-options="region:'center',title:'用户管理',iconCls:'icon-ok'">
 
 		<!-- 查询条件-->
