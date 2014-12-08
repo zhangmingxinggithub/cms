@@ -296,15 +296,13 @@ function setDept()
 			toolbar:'#tbsUserGridToolbar'
 
 	    });
-
-
 	    $('#tbsUserGrid').datagrid('load', {});
 	});
 </script>
 
     <!-- 部门树-->
-    <div class="easyui-layout" style="width: 100%; height: 100%;">
-		<div data-options="region:'west',split:true,isonCls:'icon-save',
+<div class="easyui-layout" style="width: 100%; height: 100%;">
+	<div data-options="region:'west',split:true,isonCls:'icon-save',
 			                 tools:[{
 			                     iconCls : 'icon-reload',
 			                     handler : function() {
