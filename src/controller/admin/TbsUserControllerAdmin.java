@@ -288,10 +288,19 @@ public class TbsUserControllerAdmin extends BaseController{	private final static
 			} 
 		}
 
-		for(TbsUserModel bean:listTbsUserModel )
+		if(listTbsUserModel != null)
 		{
-			bean.setDept_name(departMentService.selectByPrimaryKey(bean.getDept_id()).getName());
+			for(TbsUserModel bean:listTbsUserModel )
+			{
+				TbsDepartMentModel dept = departMentService.selectByPrimaryKey(bean.getDept_id());
+				if(dept != null)
+				{
+					bean.setDept_name(dept.getName());
+				}
+				
+			}
 		}
+
 		
 		// 返回结果
 		Map<String,Object> res = new HashMap<String,Object>();
