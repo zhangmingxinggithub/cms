@@ -285,8 +285,7 @@ public class TbsUserControllerAdmin extends BaseController{	private final static
 		} else {
 			if (pageParams.getGridName() == null) {
 				listTbsUserModel = tbsUserService.selectByModel(tbsUserModel);
-			} else {
-			}
+			} 
 		}
 
 		for(TbsUserModel bean:listTbsUserModel )
