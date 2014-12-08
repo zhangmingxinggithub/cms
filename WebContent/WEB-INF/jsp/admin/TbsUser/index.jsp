@@ -3,15 +3,11 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <script type="text/javascript">
 
-var sid="";
-var sname="";
+
 var dept_id=""
 function init(id,name){
-	if(id!="-1"){
-		sid=id;
-    	sname=name;
-	}else{
-    }
+	$('#tbsUserGrid').datagrid('options').pageNumber=1;
+	$('#tbsUserGrid').datagrid('reload',{"dept_id":id});
 	
 }
 
