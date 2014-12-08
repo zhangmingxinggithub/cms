@@ -203,10 +203,6 @@ function setDept()
 	//导出
 	function tbsUserGridExport(){
 		window.location="${demoPath}admin/TbsUser/export.html";
-		//var panel=$('#tbcTempGrid').datagrid('getPanel');
-		//var options=panel.panel('options');
-		//alert(options.method);
-		//console.dir(options);
 	}
 	
 	//导入
