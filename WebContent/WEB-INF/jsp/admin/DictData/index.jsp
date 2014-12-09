@@ -3,14 +3,7 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <script type="text/javascript">
 
-$(function(){
-    $('#btn2').bind('click', function(){
-		var data1 = $('#data1').val();
-		var obj = {"data1":data1,searchType:1}
-		$('#DictDataGrid').datagrid('options').pageNumber=1;
-		$('#DictDataGrid').datagrid('reload',obj);
-    });
-});
+
 
 
 
@@ -267,75 +260,16 @@ function init(id,name){
 		});
 	}
 	
-</script>
-    
-
-	 <div class="easyui-layout" style="width:100%;height:100%;">
-		<div data-options="region:'west',split:true,isonCls:'icon-save',
-			                 tools:[{
-			                     iconCls : 'icon-reload',
-			                     handler : function() {
-			                        $('#datatree').tree('reload');
-			                     }
-			                 },{
-			                    iconCls : 'icon-redo',
-			                    handler : function() {
-			                       var node = $('#datatree').tree('getSelected');
-			                       if(node){
-			                          $('#datatree').tree('expandAll', node.target);
-			                       }else{
-			                          $('#datatree').tree('expandAll');
-			                       }
-			                    }
-			                 },{
-			                    iconCls : 'icon-undo',
-			                    handler : function() {
-				                    var node = $('#datatree').tree('getSelected');
-				                    if (node) {
-				                      $('#datatree').tree('collapseAll', node.target);
-				                    }else{
-				                      $('#datatree').tree('collapseAll');
-				                    }
-			                    }
-			                 }]" title="数据字典管理" style="width:194px;">
-		                 <div title="test">
-			             <ul id="datatree" class="easyui-tree" data-options="
-								url:'${demoPath}/admin/DictData/json.html', 
-								onSelect : function(node) {
-								   init(node.id,node.text);
-								}"
-								
-							 />
-			             
-			             </div>
-		</div>
-		<div data-options="region:'center',title:'数据字典管理',iconCls:'icon-ok'">
-		    
-		      <!-- 查询条件-->
-		<div  class="easyui-panel" title="查询"
-			style="padding: 10px;" data-options="collapsible:true">
-			<table>
-				<tr>
-					<td>
-						<label>
-							节点名称:
-						</label>
-					</td>
-					<td>
-						<input id="data1" name="data1" class="easyui-validatebox"
-							type="text" />
-					</td>
-					<td>
-						<a id="btn2" href="javascript:void(0)" class="easyui-linkbutton"
-							data-options="iconCls:'icon-search'">查询</a>
-					</td>
-				</tr>
-			</table>
-		</div>
-		      
-			<!-- datagrid toolbar -->
-		<table id="DictDataGrid"  class="easyui-datagrid"  data-options="	
-			url:'${demoPath}admin/DictData/data.html',
+	$(function(){
+	    $('#btn2').bind('click', function(){
+			var data1 = $('#data1').val();
+			var obj = {"data1":data1,searchType:1}
+			$('#DictDataGrid').datagrid('options').pageNumber=1;
+			$('#DictDataGrid').datagrid('reload',obj);
+	    });
+	    
+	    $('#DictDataGrid').datagrid({
+	    	url:'${demoPath}admin/DictData/data.html',
 			frozenColumns : [ [ {field : 'ck',checkbox : true}] ],
 			columns:[ [  
 			{field:'treeid',title:'数据类型',hidden:false,width:'135',halign:'center',align:'center',sortable:'true', formatter: function(value,row,index){
@@ -358,41 +292,61 @@ function init(id,name){
 			}}
 			] ],
 			toolbar:'#DictDataGridToolbar'
-		"/>
-		
-		<!-- datagrid toolbar -->
-		<div id="DictDataGridToolbar">
-			<div style="margin-bottom:5px">
-				<c:forEach items="${buttons}" var="button">
-			         ${button}
-			    </c:forEach>
-				<%-- 
-				<a href="javascript:void(0)" onclick="javascript:DictDataGridAddAndEdit('添加  test','${demoPath}admin/DictData/add.html',0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">添加</a>
-				<a href="javascript:void(0)" onclick="javascript:DictDataGridAddAndEdit('修改  test','${demoPath}admin/DictData/save.html',1)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'">编辑 </a>  
-				<a href="javascript:void(0)" onclick="javascript:DictDataGridDel()" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">删除</a>
-				<a href="javascript:void(0)" onclick="javascript:DictDataGridReload()" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">刷新</a>
-				<a href="javascript:void(0)" onclick="javascript:DictDataGridExport()" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">导出</a>
-				<a href="javascript:void(0)" onclick="javascript:DictDataGridImport()" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">导入</a>
-				
-				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-undo'">后退</a>
-				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-redo'">前进</a>
-				--%>
-				<!-- DictDataGridToolbarSearch -->
-				<!-- <input class="easyui-searchbox" data-options="
-					menu :'#DictDataGridToolbarSearch',
-					prompt :'模糊查询',
-					searcher : function(value,name){
-						var str='{searchType:1,'+name+':\''+value+'\'}';
-				        var obj = eval('('+str+')');
-				        $('#DictDataGrid').datagrid('options').pageNumber=1;
-						$('#DictDataGrid').datagrid('reload',obj);
-					}
-				"/> -->
-				<!-- <div id="DictDataGridToolbarSearch">
-					<div name="name">部门名称</div>
-				</div> -->
-<!-- 				<a href="javascript:void(0)" onclick="javascript:testSearch()" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-search'">高级查询</a>
- -->			</div>
+	    	
+	    })
+	});
+	
+</script>
+    
+
+	 <div class="easyui-layout" style="width:100%;height:100%;">
+		<div data-options="region:'west',split:true,isonCls:'icon-save',
+			                   tools:[{
+			                     iconCls : 'icon-reload',
+			                     handler : function() {
+			                        $('#datatree').tree('reload');
+			                        }
+			                 }]" title="数据字典管理" style="width:194px;">
+               <div title="test">
+              <ul id="datatree" class="easyui-tree" data-options="
+					url:'${demoPath}/admin/DictData/json.html', 
+					onSelect : function(node) {
+					   init(node.id,node.text);
+					}"
+				 ></ul>
+             </div>
 		</div>
+		<div data-options="region:'center',title:'数据字典管理',iconCls:'icon-ok'">
+		      <!-- 查询条件-->
+			<div  class="easyui-panel" title="查询"
+				style="padding: 10px;" data-options="collapsible:true">
+				<table>
+				<tr>
+					<td>
+						<label>
+							节点名称:
+						</label>
+					</td>
+					<td>
+						<input id="data1" name="data1" class="easyui-validatebox"
+							type="text" />
+					</td>
+					<td>
+						<a id="btn2" href="javascript:void(0)" class="easyui-linkbutton"
+							data-options="iconCls:'icon-search'">查询</a>
+					</td>
+				</tr>
+			</table>
+			</div>
+			<!-- datagrid toolbar -->
+			<div id="TbsDepartMentGridToolbar">
+				<div style="margin-bottom:5px">
+					<c:forEach items="${buttons}" var="button">
+				         ${button}
+				    </c:forEach>
+			    </div>
+			</div>
+			<!-- datagrid toolbar -->
+			<table id="DictDataGrid"  class="easyui-datagrid"></table>
 		</div>
 	</div>

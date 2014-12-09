@@ -3,14 +3,7 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <script type="text/javascript">
 
-$(function(){
-    $('#btn').bind('click', function(){
-		var treeid = $('#treeid').val();
-		var obj = {"treeid":treeid,searchType:1}
-		$('#DictTypeGrid').datagrid('options').pageNumber=1;
-		$('#DictTypeGrid').datagrid('reload',obj);
-    });
-});
+
 	//Add and Edit
 	function DictTypeGridAddAndEdit(title, url, type) {
 		if (type == 1) { //edit
@@ -199,6 +192,35 @@ $(function(){
 		});
 	}
 	
+	
+	$(function(){
+	    $('#btn').bind('click', function(){
+			var treeid = $('#treeid').val();
+			var obj = {"treeid":treeid,searchType:1}
+			$('#DictTypeGrid').datagrid('options').pageNumber=1;
+			$('#DictTypeGrid').datagrid('reload',obj);
+	    });
+	    
+	    $('#DictTypeGrid').datagrid({
+	    	url:'${demoPath}admin/DictType/data.html',
+			frozenColumns : [ [ {field : 'ck',checkbox : true}] ],
+			columns:[ [  
+			{field:'id',title:'主键',hidden:false,width:'135',halign:'center',align:'center',sortable:'true', formatter: function(value,row,index){
+			    return value;
+			}},			
+			{field:'treeid',title:'数据类型',hidden:false,width:'135',halign:'center',align:'center',sortable:'true', formatter: function(value,row,index){
+			    return value;
+			}},			
+			{field:'name',title:'类型名字',hidden:false,width:'135',halign:'center',align:'center',sortable:'true', formatter: function(value,row,index){
+			    return value;
+			}},			
+			{field:'des',title:'类型描述',hidden:false,width:'135',halign:'center',align:'center',sortable:'true', formatter: function(value,row,index){
+			    return value;
+			}}
+			] ],
+			toolbar:'#DictTypeGridToolbar'
+	    })
+	});
 </script>
     
 
@@ -226,57 +248,13 @@ $(function(){
 			</table>
 		</div>
 		<!-- datagrid toolbar -->
-		<table id="DictTypeGrid"  class="easyui-datagrid" data-options="	
-			url:'${demoPath}admin/DictType/data.html',
-			frozenColumns : [ [ {field : 'ck',checkbox : true}] ],
-			columns:[ [  
-			{field:'id',title:'主键',hidden:false,width:'135',halign:'center',align:'center',sortable:'true', formatter: function(value,row,index){
-			    return value;
-			}},			
-			{field:'treeid',title:'数据类型',hidden:false,width:'135',halign:'center',align:'center',sortable:'true', formatter: function(value,row,index){
-			    return value;
-			}},			
-			{field:'name',title:'类型名字',hidden:false,width:'135',halign:'center',align:'center',sortable:'true', formatter: function(value,row,index){
-			    return value;
-			}},			
-			{field:'des',title:'类型描述',hidden:false,width:'135',halign:'center',align:'center',sortable:'true', formatter: function(value,row,index){
-			    return value;
-			}}
-			] ],
-			toolbar:'#DictTypeGridToolbar'
-		"/>
-		
-		<!-- datagrid toolbar -->
 		<div id="DictTypeGridToolbar">
 			<div style="margin-bottom:5px">
 				<c:forEach items="${buttons}" var="button">
 			         ${button}
 			    </c:forEach>
-				<%-- 
-				<a href="javascript:void(0)" onclick="javascript:DictTypeGridAddAndEdit('添加  tbsUser','${demoPath}admin/DictType/add.html',0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">添加</a>
-				<a href="javascript:void(0)" onclick="javascript:DictTypeGridAddAndEdit('修改  tbsUser','${demoPath}admin/DictType/save.html',1)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'">编辑 </a>  
-				<a href="javascript:void(0)" onclick="javascript:DictTypeGridDel()" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">删除</a>
-				<a href="javascript:void(0)" onclick="javascript:DictTypeGridReload()" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">刷新</a>
-				<a href="javascript:void(0)" onclick="javascript:DictTypeGridExport()" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">导出</a>
-				<a href="javascript:void(0)" onclick="javascript:DictTypeGridImport()" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">导入</a>
-				
-				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-undo'">后退</a>
-				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-redo'">前进</a>
-				--%>
-				<!-- DictTypeGridToolbarSearch -->
-				<!-- <input class="easyui-searchbox" data-options="
-					menu :'#DictTypeGridToolbarSearch',
-					prompt :'模糊查询',
-					searcher : function(value,name){
-						var str='{searchType:1,'+name+':\''+value+'\'}';
-				        var obj = eval('('+str+')');
-				        $('#DictTypeGrid').datagrid('options').pageNumber=1;
-						$('#DictTypeGrid').datagrid('reload',obj);
-					}
-				"/> -->
-				<!-- <div id="DictTypeGridToolbarSearch">
-				  <div name="name">类型名字</div>
-				</div> -->
+				</div>
 		</div>
+		<!-- datagrid toolbar -->
+		<table id="DictTypeGrid"  class="easyui-datagrid"></table>
 	</div>
-<!--  <div>-->

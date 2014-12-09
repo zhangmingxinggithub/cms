@@ -2,15 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <script type="text/javascript">
-$(function(){
-    $('#btn').bind('click', function(){
-		var data1 = $('#name').val();
-		var obj = {"name":data1,searchType:1}
-		$('#TbsDepartMentGrid').datagrid('options').pageNumber=1;
-		$('#TbsDepartMentGrid').datagrid('reload',obj);
-    });
-});
-    
+
     var sid="";
     var sname="";
     function init(id,name){
@@ -221,75 +213,19 @@ $(function(){
 		});
 	}
 	
-
-</script> 
-    
-   <div class="easyui-layout" style="width:100%;height:100%;">
-		<div data-options="region:'west',split:true,isonCls:'icon-save',
-			                 tools:[{
-			                     iconCls : 'icon-reload',
-			                     handler : function() {
-			                        $('#depttree').tree('reload');
-			                     }
-			                 },{
-			                    iconCls : 'icon-redo',
-			                    handler : function() {
-			                       var node = $('#depttree').tree('getSelected');
-			                       if(node){
-			                          $('#depttree').tree('expandAll', node.target);
-			                       }else{
-			                          $('#depttree').tree('expandAll');
-			                       }
-			                    }
-			                 },{
-			                    iconCls : 'icon-undo',
-			                    handler : function() {
-				                    var node = $('#depttree').tree('getSelected');
-				                    if (node) {
-				                      $('#depttree').tree('collapseAll', node.target);
-				                    }else{
-				                      $('#depttree').tree('collapseAll');
-				                    }
-			                    }
-			                 }]" title="部门管理" style="width:194px;">
-		     <div title="TbsDepartMent">
-			             <ul id="depttree" class="easyui-tree" data-options="
-								url:'${demoPath}/admin/TbsDepartMent/json.html', 
-								onSelect : function(node) {
-								   init(node.id,node.text);
-								}
-							" />
-			             
-			             </div>
-		</div>
-		<div data-options="region:'center',title:'部门管理',iconCls:'icon-ok'">
-		      <!-- 查询条件-->
-		<div  class="easyui-panel" title="查询"
-			style="padding: 10px;" data-options="collapsible:true">
-			<table>
-				<tr>
-					<td>
-						<label>
-							部门名称:
-						</label>
-					</td>
-					<td>
-						<input id="name" name="name" class="easyui-validatebox"
-							type="text" />
-					</td>
-					<td>
-						<a id="btn" href="javascript:void(0)" class="easyui-linkbutton"
-							data-options="iconCls:'icon-search'">查询</a>
-					</td>
-				</tr>
-			</table>
-		</div>
-			<!-- datagrid toolbar -->
-		<table id="TbsDepartMentGrid"  class="easyui-datagrid"  data-options="	
+	$(function(){
+	    $('#btn').bind('click', function(){
+			var data1 = $('#name').val();
+			var obj = {"name":data1,searchType:1}
+			$('#TbsDepartMentGrid').datagrid('options').pageNumber=1;
+			$('#TbsDepartMentGrid').datagrid('reload',obj);
+	    });
+	    
+	    
+	    $('#TbsDepartMentGrid').datagrid({
 			url:'${demoPath}admin/TbsDepartMent/data.html',
 			frozenColumns : [ [ {field : 'ck',checkbox : true}] ],
 			columns:[ [  
-
 			{field:'id',title:'部门id',hidden:false,width:'135',halign:'center',align:'center',sortable:'true', formatter: function(value,row,index){
 			    return value;
 			}}	,
@@ -311,43 +247,61 @@ $(function(){
 			    return value;
 			}}
 			] ],
-			toolbar:'#TbsDepartMentGridToolbar'
-		"/>
-		
-		<!-- datagrid toolbar -->
-		<div id="TbsDepartMentGridToolbar">
-			<div style="margin-bottom:5px">
-				<c:forEach items="${buttons}" var="button">
-			         ${button}
-			    </c:forEach>
-				<%-- 
-				<a href="javascript:void(0)" onclick="javascript:TbsDepartMentGridAddAndEdit('添加  TbsDepartMent','${demoPath}admin/TbsDepartMent/add.html',0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'">添加</a>
-				<a href="javascript:void(0)" onclick="javascript:TbsDepartMentGridAddAndEdit('修改  TbsDepartMent','${demoPath}admin/TbsDepartMent/save.html',1)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'">编辑 </a>  
-				<a href="javascript:void(0)" onclick="javascript:TbsDepartMentGridDel()" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'">删除</a>
-				<a href="javascript:void(0)" onclick="javascript:TbsDepartMentGridReload()" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">刷新</a>
-				<a href="javascript:void(0)" onclick="javascript:TbsDepartMentGridExport()" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">导出</a>
-				<a href="javascript:void(0)" onclick="javascript:TbsDepartMentGridImport()" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">导入</a>
-				
-				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-undo'">后退</a>
-				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-redo'">前进</a>
-				--%>
-				<!-- TbsDepartMentGridToolbarSearch -->
-				<!-- <input class="easyui-searchbox" data-options="
-					menu :'#TbsDepartMentGridToolbarSearch',
-					prompt :'模糊查询',
-					searcher : function(value,name){
-						var str='{searchType:1,'+name+':\''+value+'\'}';
-				        var obj = eval('('+str+')');
-				        $('#TbsDepartMentGrid').datagrid('options').pageNumber=1;
-						$('#TbsDepartMentGrid').datagrid('reload',obj);
+			toolbar:'#tbsUserGridToolbar'
+	    });
+	    $('#tbsUserGrid').datagrid('load', {});
+	});
+</script> 
+    
+   <div class="easyui-layout" style="width:100%;height:100%;">
+		<div data-options="region:'west',split:true,isonCls:'icon-save',
+			                 tools:[{
+			                     iconCls : 'icon-reload',
+			                     handler : function() {
+			                        $('#depttree').tree('reload');
+			                     }
+			                 }]" title="部门管理" style="width:194px;">
+               <div title="TbsDepartMent">
+              <ul id="depttree" class="easyui-tree" data-options="
+					url:'${demoPath}/admin/TbsDepartMent/json.html', 
+					onSelect : function(node) {
+					   init(node.id,node.text);
 					}
-				"/> -->
-				<!-- <div id="TbsDepartMentGridToolbarSearch">
-					<div name="name">部门名称</div>
-				</div> -->
-<!-- 				<a href="javascript:void(0)" onclick="javascript:TbsDepartMentSearch()" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-search'">高级查询</a>
- -->			</div>
+				"/>
+             </div>
 		</div>
+		<div data-options="region:'center',title:'部门管理',iconCls:'icon-ok'">
+		      <!-- 查询条件-->
+			<div  class="easyui-panel" title="查询"
+				style="padding: 10px;" data-options="collapsible:true">
+				<table>
+					<tr>
+						<td>
+							<label>
+								部门名称:
+							</label>
+						</td>
+						<td>
+							<input id="name" name="name" class="easyui-validatebox"
+								type="text" />
+						</td>
+						<td>
+							<a id="btn" href="javascript:void(0)" class="easyui-linkbutton"
+								data-options="iconCls:'icon-search'">查询</a>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<!-- datagrid toolbar -->
+			<div id="TbsDepartMentGridToolbar">
+				<div style="margin-bottom:5px">
+					<c:forEach items="${buttons}" var="button">
+				         ${button}
+				    </c:forEach>
+			    </div>
+			</div>
+			<!-- datagrid toolbar -->
+			<table id="TbsDepartMentGrid"  class="easyui-datagrid"></table>
 		</div>
 	</div>
     
