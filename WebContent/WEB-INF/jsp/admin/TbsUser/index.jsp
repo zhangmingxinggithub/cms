@@ -4,55 +4,13 @@
 <script type="text/javascript">
 
 
-var dept_id=""
-function init(id,name){
-	$('#tbsUserGrid').datagrid('options').pageNumber=1;
-	$('#tbsUserGrid').datagrid('reload',{"dept_id":id});
-	
-}
-
-function selectDept()
-{
-	$('<div/>').dialog({
-	    title: '选择部门',
-	    width: 700,
-	    height: 600,
-	    closed: false,
-	    cache: false,
-	    href: '${demoPath}admin/common/selectDept.html',
-	    modal: true	,		
-	    buttons : [ {
-			text : '确定',
-			iconCls : 'icon-ok',
-			handler : function() {
-				setDept();
-				$(this).closest('.window-body').dialog('destroy');
-			}
-		}, {
-			text : '取消',
-			iconCls : 'icon-cancel',
-			handler : function() {
-				$(this).closest('.window-body').dialog('destroy');
-			}
-		} ],
-		onClose : function() {
-			$(this).dialog('destroy');
-		}
-	});
-}
-function setDept()
-{
-	var rows = $('#TbsDepartMentGrid').datagrid('getSelections');
-	if(rows.length == 1)
-	{
-		$('#dept_name').val(rows[0].name);
-		dept_id = rows[0].id;
+	var dept_id=""
+	function init(id,name){
+		dept_id = id;
+		$('#tbsUserGrid').datagrid('options').pageNumber=1;
+		$('#tbsUserGrid').datagrid('reload',{"dept_id":id});
+		
 	}
-	else
-	{
-		dept_id = ""
-	}
-}
 
 	//Add and Edit
 	function tbsUserGridAddAndEdit(title, url, type) {
@@ -329,16 +287,6 @@ function setDept()
 			style="padding: 10px;" data-options="collapsible:true">
 			<table>
 				<tr>
-					<td>
-						<label>
-							部门:
-						</label>
-					</td>
-					<td>
-						<input id="dept_name" name="dept_name" class="easyui-validatebox"
-							type="text" onClick="selectDept();" />
-					</td>
-
 					<td>
 						<label>
 							用户名:
