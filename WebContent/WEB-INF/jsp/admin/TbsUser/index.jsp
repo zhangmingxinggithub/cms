@@ -4,12 +4,13 @@
 <script type="text/javascript">
 
 
-var dept_id=""
-function init(id,name){
-	$('#tbsUserGrid').datagrid('options').pageNumber=1;
-	$('#tbsUserGrid').datagrid('reload',{"dept_id":id});
-	
-}
+	var dept_id=""
+	function init(id,name){
+		dept_id = id;
+		$('#tbsUserGrid').datagrid('options').pageNumber=1;
+		$('#tbsUserGrid').datagrid('reload',{"dept_id":id});
+		
+	}
 
 	//Add and Edit
 	function tbsUserGridAddAndEdit(title, url, type) {
