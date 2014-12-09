@@ -292,8 +292,8 @@ function init(id,name){
 			}}
 			] ],
 			toolbar:'#DictDataGridToolbar'
-	    	
-	    })
+	    });
+	    $('#DictDataGrid').datagrid('load', {});
 	});
 	
 </script>
@@ -339,7 +339,7 @@ function init(id,name){
 			</table>
 			</div>
 			<!-- datagrid toolbar -->
-			<div id="TbsDepartMentGridToolbar">
+			<div id="DictDataGridToolbar">
 				<div style="margin-bottom:5px">
 					<c:forEach items="${buttons}" var="button">
 				         ${button}

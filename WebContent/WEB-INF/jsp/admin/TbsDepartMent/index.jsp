@@ -247,9 +247,9 @@
 			    return value;
 			}}
 			] ],
-			toolbar:'#tbsUserGridToolbar'
+			toolbar:'#TbsDepartMentGridToolbar'
 	    });
-	    $('#tbsUserGrid').datagrid('load', {});
+	    $('#TbsDepartMentGrid').datagrid('load', {});
 	});
 </script> 
     
