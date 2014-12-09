@@ -3,6 +3,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import model.DictTypeModel;
 import model.DictTypeModel;
+import model.TbsDepartMentModel;
 import model.TbsRoleMenuModel;
 
 import org.apache.log4j.Logger;
@@ -33,6 +35,8 @@ import service.TbsRoleMenuService;
 import util.core.ExcelUtil;
 import util.core.MethodUtil;
 import util.core.PageParams;
+import util.core.PageUtil;
+import util.json.JsonUtil;
 import util.spring.MyTimestampPropertyEdit;
 import util.spring.SessionUtil;
 
@@ -265,154 +269,35 @@ public class DictTypeControllerAdmin extends BaseController{	private final stati
 	@RequestMapping("data.html")
 	@ResponseBody
 	public String data(PageParams pageParams, DictTypeModel testModel) throws Exception {
-		System.out.println("pageParams:" + pageParams + "|testModel:" + testModel);
-		testModel.getPageUtil().setPaging(true);
-		String result = "[]";
-		if (pageParams.getPage() != null) {
-			try {
-				testModel.getPageUtil().setPageId(Integer.parseInt(pageParams.getPage())); // 当前页
-			} catch (Exception e) {
-				log.error(e);
-			}
-		}
-		if (pageParams.getRows() != null) {
-			try {
-				testModel.getPageUtil().setPageSize(Integer.parseInt(pageParams.getRows()));// 显示X条
-			} catch (Exception e) {
-				log.error(e);
-			}
-		}
-		if (pageParams.getSort() != null) {
-			try {
-				testModel.getPageUtil().setOrderByCondition(pageParams.getSort()); // 排序字段名称
-			} catch (Exception e) {
-				log.error(e);
-			}
-		}
+		
+		// 构建查询条件
+        testModel.getPageUtil().setPaging(true);
+		String result = "";
+		PageUtil.pageConfig(pageParams, testModel.getPageUtil());
 
-		// testModel.getPageUtil().setOrderDirection(true); //true false 表示 正序与倒序
-        String str="";
-        String suffix = "}";
-        if(pageParams.getGridName() != null){
-        	str="[";
-        	suffix="]}";
-        }
-		List<DictTypeModel> listTestModel = null;
-		StringBuilder center = new StringBuilder();
-
+		// 查询结果
+		List<DictTypeModel> listTbsUserModel = new ArrayList<DictTypeModel>();
 		if (pageParams.getSearchType() != null) {
 			if (pageParams.getSearchType().equals("1")) { // 模糊搜索
 				testModel.getPageUtil().setLike(true);
-				listTestModel = DictTypeService.selectByModel(testModel);
-				center.append("{\"total\":\"" + testModel.getPageUtil().getRowCount() + "\",\"rows\":"+str);
-			} else {
-				/*StringBuffer sb = new StringBuffer(); // 高级查询
-				String[] searchColumnNameArray = pageParams.getSearchColumnNames().split("\\,");
-				String[] searchAndsArray = pageParams.getSearchAnds().split("\\,");
-				String[] searchConditionsArray = pageParams.getSearchConditions().split("\\,");
-				String[] searchValsArray = pageParams.getSearchVals().split("\\,");
-				System.out.println(Arrays.toString(searchColumnNameArray));
-				for (int i = 0; i < searchColumnNameArray.length; i++) {
-					if (searchColumnNameArray[i].trim().length() > 0 && searchConditionsArray[i].trim().length() > 0) {
-						if (i == 0) {
-							sb.append(searchColumnNameArray[i].trim() + " " + searchConditionsArray[i].trim() + " '" + searchValsArray[i].trim() + "'");
-						} else {
-							sb.append(" " + searchAndsArray[i].trim() + " " + searchColumnNameArray[i].trim() + " " + searchConditionsArray[i].trim() + " '" + searchValsArray[i].trim() + "'");
-						}
-					}
-				}
-				if (sb.length() > 0) {
-					System.out.println("searchCondition:" + sb.toString());
-					testModel.getPageUtil().setAndCondition(sb.toString());
-					listTestModel = departMentService.selectByModel(testModel);
-					center.append("{\"total\":\"" + testModel.getPageUtil().getRowCount() + "\",\"rows\":"+str);
-				}*/
-			}
+				listTbsUserModel = DictTypeService.selectByModel(testModel);
+			} 
 		} else {
 			if (pageParams.getGridName() == null) {
-				listTestModel = DictTypeService.selectByModel(testModel);
-				center.append("{\"total\":\"" + testModel.getPageUtil().getRowCount() + "\",\"rows\":");
-				suffix = "}";
-			} else {
-			}
+				listTbsUserModel = DictTypeService.selectByModel(testModel);
+			} 
 		}
-
-		if (pageParams.getGridName() == null) { //datagrid
-			center.append(JSON.toJSONString(listTestModel));
-		} else {
-		}
-		center.append(suffix);
-		result = center.toString();
-		System.out.println("json:" + result);
+		
+		// 返回结果
+		Map<String,Object> res = new HashMap<String,Object>();
+		res.put("\"total\"",  testModel.getPageUtil().getRowCount());
+		res.put("\"rows\"", JSON.toJSONString(listTbsUserModel));
+		result = JsonUtil.toJson(res);
 		return result;
 	}
 	
 	@Autowired
 	TbsRoleMenuService<TbsRoleMenuModel> tbsRoleMenuService;
-	
-	/**
-	 * 
-	 * <br>
-	 * <b>功能：</b> 生成树<br>
-	 * <b>作者：</b>张明星<br>
-	 * <b>日期：</b> 2014-11-28 <br>
-	 * @param response
-	 * @param tbcTempModel
-	 *//*
-	@RequestMapping("json.html")
-	@ResponseBody
-	public String json(String id) throws Exception {
-		List<DictTypeModel> listTestModel = null;
-		StringBuffer sb = new StringBuffer();
-		if(id == null)
-		{
-			listTestModel = departMentService.selectBySql("select id ,name ,pid from tbsdepartment where pid=''or pid is null ");
-			if (listTestModel != null && listTestModel.size() > 0) 
-			{
-				sb.append("[");
-				sb.append("{");
-				sb.append("\"id\":" + "\"-1\",");
-				sb.append("\"text\":" + "\"XXX公司\",");
-				sb.append("\"children\":");
-				sb.append("[");
-				sb.append(getListString(listTestModel));
-				sb = sb.delete(sb.length() - 1, sb.length());
-				sb.append("]");
-				
-				sb.append("}");
-				sb.append("]");
-		   }
-		}		
-		else
-		{
-			List<DictTypeModel> nodeList = departMentService.selectBySql("select id ,name ,pid from tbsdepartment where pid='"+id+"' ");
-			sb.append("[");
-			sb.append(getListString(nodeList));
-			sb = sb.delete(sb.length() - 1, sb.length());
-			sb.append("]");
-			
-		}
-		System.out.println("json:" + sb.toString());
-		return sb.toString();
-	}
-	
-	public String getListString(List<DictTypeModel> nodeList)throws Exception{
-		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < nodeList.size(); i++) {
-			DictTypeModel model = new DictTypeModel();
-			sb.append("{");
-			model = nodeList.get(i);
-			String pid = (String) model.getId();
-		    List<DictTypeModel> node = departMentService.selectBySql("select id ,name ,pid from tbsdepartment where pid='"+pid+"' ");
-			if (node.size()>0) {
-				sb.append("\"state\":\"closed\",");
-			}
-			sb.append("\"id\":" + "\"" + pid + "\",");
-			sb.append("\"text\":" + "\"" + model.getName() + "\"");
-			sb.append("},");
-		}
-		return sb.toString();
-	}*/
 		
 	/**
 	 * 
