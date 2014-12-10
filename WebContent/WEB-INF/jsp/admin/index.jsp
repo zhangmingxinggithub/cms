@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <%@ include file="path.jsp"%>
-<title>欢迎使用CMS606后台管理系统</title>
+<title>人力资源管理系统</title>
 <meta http-equiv="pragma" content="no-cache" />
 <meta http-equiv="cache-control" content="no-cache" />
 <meta http-equiv="expires" content="0" />
@@ -169,7 +169,7 @@
 
 
 	<!-- 中心 start-->
-	<div data-options="region:'center'" title="欢迎使用CMS606管理系统" style="overflow:hidden;">
+	<div data-options="region:'center'" title="人力资源管理系统" style="overflow:hidden;">
 		<div id="tab" class="easyui-tabs" data-options="fit:true,border:false">
 			<div title="欢迎页">
 				<div style="padding-left: 10px;">
