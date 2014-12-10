@@ -228,22 +228,14 @@
 			url:'${demoPath}admin/TbsUser/data.html',
 			frozenColumns : [ [ {field : 'ck',checkbox : true}] ],
 			columns:[ [  
-
-			{field:'id',title:'主键',hidden:false,width:'135',halign:'center',align:'center',sortable:'true', formatter: function(value,row,index){
-			    return value;
-			}},			
-
-			{field:'dept_id',title:'部门',hidden:false,width:'135',halign:'center',align:'center',sortable:'true', formatter: function(value,row,index){
+	
+			{field:'dept_name',title:'部门',hidden:false,width:'135',halign:'center',align:'center',sortable:'true', formatter: function(value,row,index){
 			    return value;
 			}},	
 			
 			{field:'username',title:'用户名',hidden:false,width:'135',halign:'center',align:'center',sortable:'true', formatter: function(value,row,index){
 			    return value;
-			}},			
-
-			{field:'password',title:'密码',hidden:false,width:'135',halign:'center',align:'center',sortable:'true', formatter: function(value,row,index){
-			    return value;
-			}},			
+			}},				
 
 			{field:'createTime',title:'时间',hidden:false,width:'135',halign:'center',align:'center',sortable:'true', formatter: function(value,row,index){
 			    return value;
