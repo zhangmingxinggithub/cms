@@ -19,6 +19,9 @@
 	href="${demoPath}static/js/easyui/themes/bootstrap/easyui.css" />
 <link rel="stylesheet" type="text/css"
 	href="${demoPath}static/js/easyui/themes/icon.css" />
+
+<!-- common-->
+<script type="text/javascript" src="${demoPath}static/js/util.js"></script>
 <script type="text/javascript">
 
     var sid="";
