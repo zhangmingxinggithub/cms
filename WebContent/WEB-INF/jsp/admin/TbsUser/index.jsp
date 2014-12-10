@@ -268,7 +268,26 @@
 
 	    });
 	    $('#tbsUserGrid').datagrid('load', {});
+		var pg = $("#tbsUserGrid").datagrid("getPager");  
+		if(pg)  
+		{  
+		   $(pg).pagination({  
+		       onRefresh:function(pageNumber,pageSize){  
+		    	   $('#tbsUserGrid').datagrid("clearSelections");
+		        },  
+		       onChangePageSize:function(){  
+		    	   $('#tbsUserGrid').datagrid("clearSelections");
+		        },  
+		       onSelectPage:function(pageNumber,pageSize){  
+		    	   $('#tbsUserGrid').datagrid("clearSelections");
+		        }  
+		   });  
+		} 
 	});
+	
+	
+ 
+	
 </script>
 </head>
 <body id="body" class="easyui-layout">
