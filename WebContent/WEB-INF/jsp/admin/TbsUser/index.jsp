@@ -154,9 +154,12 @@
 	}
 	
 	//Reload
-	function tbsUserGridReload() {
-		$('#tbsUserGrid').datagrid('options').pageNumber=1;
-		$('#tbsUserGrid').datagrid('reload',{});
+	function tbsUserGridReload(pageNumber) {
+		var username = $('#username').val();
+		var obj = {"username":username,searchType:1,"dept_id":dept_id}
+		$('#tbsUserGrid').datagrid("clearSelections");
+		$('#tbsUserGrid').datagrid('options').pageNumber=pageNumber;
+		$('#tbsUserGrid').datagrid('reload',obj);
 	}
 	
 	//tbsUserGridSubmit  submit
@@ -218,10 +221,7 @@
 	}
 	$(function(){
 	    $('#btn').bind('click', function(){
-			var username = $('#username').val();
-			var obj = {"username":username,searchType:1,"dept_id":dept_id}
-			$('#tbsUserGrid').datagrid('options').pageNumber=1;
-			$('#tbsUserGrid').datagrid('reload',obj);
+	    	tbsUserGridReload(1)
 	    });
 
 	    $('#tbsUserGrid').datagrid({
@@ -271,15 +271,9 @@
 		var pg = $("#tbsUserGrid").datagrid("getPager");  
 		if(pg)  
 		{  
-		   $(pg).pagination({  
-		       onRefresh:function(pageNumber,pageSize){  
-		    	   $('#tbsUserGrid').datagrid("clearSelections");
-		        },  
-		       onChangePageSize:function(){  
-		    	   $('#tbsUserGrid').datagrid("clearSelections");
-		        },  
-		       onSelectPage:function(pageNumber,pageSize){  
-		    	   $('#tbsUserGrid').datagrid("clearSelections");
+		   $(pg).pagination({
+		       onSelectPage:function(pageNumber,pageSize){
+				   tbsUserGridReload(pageNumber)
 		        }  
 		   });  
 		} 
