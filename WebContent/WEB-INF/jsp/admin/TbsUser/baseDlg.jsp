@@ -7,7 +7,7 @@ function selectDept()
 	$('<div/>').dialog({
 	    title: '选择部门',
 	    width: 700,
-	    height: 600,
+	    height: 430,
 	    closed: false,
 	    cache: false,
 	    href: '${demoPath}admin/common/selectDept.html',
