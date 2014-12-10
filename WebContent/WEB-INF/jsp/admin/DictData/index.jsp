@@ -164,9 +164,12 @@ function init(id,name){
 	}
 	
 	//Reload
-	function DictDataGridReload() {
-		$('#DictDataGrid').datagrid('options').pageNumber=1;
-		$('#DictDataGrid').datagrid('reload',{});
+	function DictDataGridReload(pageNumber) {
+		var treeid = $('#treeid').val();
+		var obj = {"treeid":treeid,searchType:1,"pid":sid}
+		$('#DictDataGrid').datagrid("clearSelections");
+		$('#DictDataGrid').datagrid('options').pageNumber=pageNumber;
+		$('#DictDataGrid').datagrid('reload',obj);
 	}
 	
 	//DictDataGridSubmit  submit
@@ -310,6 +313,15 @@ function init(id,name){
 			toolbar:'#DictDataGridToolbar'
 	    });
 	    $('#DictDataGrid').datagrid('load', {});
+	    var pg = $("#DictDataGrid").datagrid("getPager");  
+		if(pg)  
+		{  
+		   $(pg).pagination({
+		       onSelectPage:function(pageNumber,pageSize){
+		    	   DictDataGridReload(pageNumber)
+		        }  
+		   });  
+		}
 	});
 	
 </script>

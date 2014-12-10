@@ -102,9 +102,12 @@
 	}
 	
 	//Reload
-	function DictTypeGridReload() {
-		$('#DictTypeGrid').datagrid('options').pageNumber=1;
-		$('#DictTypeGrid').datagrid('reload',{});
+	function DictTypeGridReload(pageNumber) {
+		var treeid = $('#treeid').val();
+		var obj = {"treeid":treeid,searchType:1}
+		$('#DictTypeGrid').datagrid("clearSelections");
+		$('#DictTypeGrid').datagrid('options').pageNumber=pageNumber;
+		$('#DictTypeGrid').datagrid('reload',obj);
 	}
 	
 	//DictTypeGridSubmit  submit
@@ -240,7 +243,17 @@
 			}}
 			] ],
 			toolbar:'#DictTypeGridToolbar'
-	    })
+	    });
+	    $('#DictTypeGrid').datagrid('load', {});
+	    var pg = $("#DictTypeGrid").datagrid("getPager");  
+		if(pg)  
+		{  
+		   $(pg).pagination({
+		       onSelectPage:function(pageNumber,pageSize){
+		    	   DictTypeGridReload(pageNumber)
+		        }  
+		   });  
+		}
 	});
 </script>
 </head>

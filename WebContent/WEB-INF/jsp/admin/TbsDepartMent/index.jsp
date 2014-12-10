@@ -122,9 +122,12 @@
 	}
 	
 	//Reload
-	function testGridReload() {
-		$('#TbsDepartMentGrid').datagrid('options').pageNumber=1;
-		$('#TbsDepartMentGrid').datagrid('reload',{});
+	function testGridReload(pageNumber) {
+		var username = $('#name').val();
+		var obj = {"name":username,searchType:1,"pid":sid}
+		$('#TbsDepartMentGrid').datagrid("clearSelections");
+		$('#TbsDepartMentGrid').datagrid('options').pageNumber=pageNumber;
+		$('#TbsDepartMentGrid').datagrid('reload',obj);
 	}
 	
 	//testGridSubmit  submit
@@ -272,6 +275,15 @@
 			toolbar:'#TbsDepartMentGridToolbar'
 	    });
 	    $('#TbsDepartMentGrid').datagrid('load', {});
+	    var pg = $("#TbsDepartMentGrid").datagrid("getPager");  
+		if(pg)  
+		{  
+		   $(pg).pagination({
+		       onSelectPage:function(pageNumber,pageSize){
+		    	   testGridReload(pageNumber)
+		        }  
+		   });  
+		} 
 	});
 </script> 
  </head>
