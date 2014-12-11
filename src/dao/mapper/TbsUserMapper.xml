@@ -444,7 +444,7 @@
 
 <!-- 删除,主键删除   -->
 <delete id="deleteByPrimaryKey" parameterType="model.TbsUserModel">
-    delete from TbsUser<include refid="where"/><include refid="columnKey"/>
+    delete from TbsUser where id=#{id}
 </delete>
 
 
@@ -456,7 +456,7 @@
 
 <!-- 查询,主键查询   -->
 <select id="selectByPrimaryKey"  resultMap="tableMapToModel" parameterType="java.lang.Object">
-	select <include refid="tbaleColumns"/> from TbsUser <include refid="where"/> <include refid="columnKey"/>
+	select <include refid="tbaleColumns"/> from TbsUser where id=#{id}
 </select>
 
   	
