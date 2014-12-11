@@ -161,6 +161,14 @@
 		$('#tbsUserGrid').datagrid('options').pageNumber=pageNumber;
 		$('#tbsUserGrid').datagrid('reload',obj);
 	}
+	//Load
+	function tbsUserGridLoad(pageNumber) {
+		var username = $('#username').val();
+		var obj = {"username":username,searchType:1,"dept_id":dept_id}
+		$('#tbsUserGrid').datagrid("clearSelections");
+		$('#tbsUserGrid').datagrid('options').pageNumber=pageNumber;
+		$('#tbsUserGrid').datagrid('load',obj);
+	}
 	
 	//tbsUserGridSubmit  submit
 	function tbsUserGridSubmit(url) {
@@ -221,7 +229,7 @@
 	}
 	$(function(){
 	    $('#btn').bind('click', function(){
-	    	tbsUserGridReload(1)
+	    	tbsUserGridLoad(1)
 	    });
 
 	    $('#tbsUserGrid').datagrid({
