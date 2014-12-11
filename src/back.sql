@@ -301,25 +301,51 @@ insert  into `TbsRoleUser`(`id`,`userId`,`roleId`,`createTime`) values ('1308011
 
 DROP TABLE IF EXISTS `TbsUser`;
 
-CREATE TABLE `TbsUser` (
-  `id` char(20) collate utf8_unicode_ci NOT NULL COMMENT '主键',
-  `username` varchar(50) collate utf8_unicode_ci NOT NULL COMMENT '用户名',
-  `password` varchar(50) collate utf8_unicode_ci default NULL COMMENT '密码',
-  `createTime` timestamp NOT NULL default CURRENT_TIMESTAMP COMMENT '时间',
-  `ip` varchar(20) collate utf8_unicode_ci default NULL COMMENT 'ip',
-  `count` int(9) default '0' COMMENT '次数',
-  `isLock` int(1) default '0' COMMENT '锁定',
-  `lockTime` datetime default NULL COMMENT '锁定时间',
-  `failCount` int(1) default '0' COMMENT '失败次数',
-  `isAdmin` int(1) default '1' COMMENT '权限类型',
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `unique_username` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='系统用户';
-
+CREATE TABLE `tbsuser` (
+	`id` CHAR(20) NOT NULL COMMENT '主键' COLLATE 'utf8_unicode_ci',
+	`username` VARCHAR(50) NOT NULL COMMENT '用户名' COLLATE 'utf8_unicode_ci',
+	`password` VARCHAR(50) NULL DEFAULT NULL COMMENT '密码' COLLATE 'utf8_unicode_ci',
+	`createTime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '时间',
+	`ip` VARCHAR(20) NULL DEFAULT NULL COMMENT 'ip' COLLATE 'utf8_unicode_ci',
+	`count` INT(9) NULL DEFAULT '0' COMMENT '次数',
+	`isLock` INT(1) NULL DEFAULT '0' COMMENT '锁定',
+	`lockTime` DATETIME NULL DEFAULT NULL COMMENT '锁定时间',
+	`failCount` INT(1) NULL DEFAULT '0' COMMENT '失败次数',
+	`isAdmin` INT(1) NULL DEFAULT '1' COMMENT '权限类型',
+	`sex` CHAR(1) NULL DEFAULT '1' COMMENT '性别' COLLATE 'utf8_unicode_ci',
+	`telephone` VARCHAR(32) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
+	`address` VARCHAR(200) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
+	`family_tel` VARCHAR(32) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
+	`birth_place` VARCHAR(200) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
+	`social_num` VARCHAR(32) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
+	`account_num` VARCHAR(32) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
+	`status` CHAR(1) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
+	`dept_id` VARCHAR(20) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
+	PRIMARY KEY (`id`),
+	UNIQUE INDEX `unique_username` (`username`)
+)
+COMMENT='系统用户'
+COLLATE='utf8_unicode_ci'
+ENGINE=InnoDB;
 /*Data for the table `TbsUser` */
 
-insert  into `TbsUser`(`id`,`username`,`password`,`createTime`,`ip`,`count`,`isLock`,`lockTime`,`failCount`,`isAdmin`) values ('13080110395510410111','test4','adb72b256f38df9e','2013-08-01 10:39:55','127.0.0.1',0,0,NULL,0,1),('13080110395524537333','test2','adb72b256f38df9e','2013-08-01 10:39:55','127.0.0.1',0,0,NULL,0,1),('13080110395524874852','admin','a45f95af5d76c986','2013-08-01 10:39:55','127.0.0.1',0,0,NULL,0,0),('13080110395527650842','test6','adb72b256f38df9e','2013-08-01 10:39:55','127.0.0.1',0,0,NULL,0,1),('13080110395530275034','test7','adb72b256f38df9e','2013-08-01 10:39:55','127.0.0.1',0,0,NULL,0,1),('13080110395536197890','test5','adb72b256f38df9e','2013-08-01 10:39:55','127.0.0.1',0,0,NULL,0,1),('13080110395541498736','test8','adb72b256f38df9e','2013-08-01 10:39:56','127.0.0.1',0,0,NULL,0,1),('13080110395543386179','test1','adb72b256f38df9e','2013-08-01 10:39:55','127.0.0.1',0,0,NULL,0,1),('13080110395552799616','test3','adb72b256f38df9e','2013-08-01 10:39:55','127.0.0.1',0,0,NULL,0,1),('13080110430015085615','t','77bb70300fb93299','2013-08-01 10:43:00',NULL,0,0,NULL,0,1),('13080110430332663866','tt','77bb70300fb93299','2013-08-01 10:43:04',NULL,0,0,NULL,0,1),('13080110430783453749','ttt','77bb70300fb93299','2013-08-01 10:43:07',NULL,0,0,NULL,0,1),('13080110431199269046','tttt','77bb70300fb93299','2013-08-01 10:43:11',NULL,0,0,NULL,0,1),('13080110431529406390','ttttt','77bb70300fb93299','2013-08-01 10:43:15',NULL,0,0,NULL,0,1);
-
+INSERT INTO `tbsuser` (`id`, `username`, `password`, `createTime`, `ip`, `count`, `isLock`, `lockTime`, `failCount`, `isAdmin`, `sex`, `telephone`, `address`, `family_tel`, `birth_place`, `social_num`, `account_num`, `status`, `dept_id`) VALUES
+	('13080110395524874852', 'admin', 'adb72b256f38df9e', '2014-12-10 20:39:09', '127.0.0.1', 0, 0, NULL, 0, 0, '1', '', '222', '', '', '', '', '1', '2'),
+	('13080110395527650842', 'ouyanlgi', 'adb72b256f38df9e', '2013-08-01 10:39:55', '127.0.0.1', 0, 0, NULL, 0, 0, '1', '434343', '江西九江湖口', '121', '3232', '34343', '4343', '1', '2'),
+	('13080110395530275034', 'test7', 'adb72b256f38df9e', '2013-08-01 10:39:55', '127.0.0.1', 0, 0, NULL, 0, 1, '1', NULL, '222', NULL, NULL, NULL, NULL, NULL, '2'),
+	('13080110395536197890', 'test5', 'adb72b256f38df9e', '2013-08-01 10:39:55', '127.0.0.1', 0, 0, NULL, 0, 1, '1', NULL, '222', NULL, NULL, NULL, NULL, NULL, '2'),
+	('13080110395541498736', 'test8', 'adb72b256f38df9e', '2013-08-01 10:39:56', '127.0.0.1', 0, 0, NULL, 0, 1, '1', NULL, '222', NULL, NULL, NULL, NULL, NULL, '2'),
+	('13080110395543386179', 'test1', 'adb72b256f38df9e', '2013-08-01 10:39:55', '127.0.0.1', 0, 0, NULL, 0, 1, '1', NULL, '333', NULL, NULL, NULL, NULL, NULL, '2'),
+	('13080110395552799616', 'test3', 'adb72b256f38df9e', '2013-08-01 10:39:55', '127.0.0.1', 0, 0, NULL, 0, 1, '1', '', '444', '', '', '', '', '1', '2'),
+	('13080110430783453749', 'ttt', '77bb70300fb93299', '2013-08-01 10:43:07', NULL, 0, 0, NULL, 0, 1, '1', NULL, '555', NULL, NULL, NULL, NULL, NULL, '2'),
+	('13080110431199269046', 'tttt', '77bb70300fb93299', '2013-08-01 10:43:11', NULL, 0, 0, NULL, 0, 1, '1', NULL, '666', NULL, NULL, NULL, NULL, NULL, '2'),
+	('13080110431529406390', 'ttttt', '77bb70300fb93299', '2013-08-01 10:43:15', NULL, 0, 0, NULL, 0, 1, '1', NULL, '777', NULL, NULL, NULL, NULL, NULL, '2'),
+	('14112914242019192008', 'qqq', 'adb72b256f38df9e', '2014-11-01 14:23:43', '127.0.0.1', 0, 0, NULL, 0, 0, '2', '', '777777', '', '', '', '', '1', '2'),
+	('14120216563447522362', 'tt', '497c86bbe3b981a6', '2014-12-02 16:56:15', NULL, 0, 0, NULL, 0, 0, '2', '12345678908', 'ttt', '', '', '', '', '1', '2'),
+	('14120512155256553870', '123', 'adb72b256f38df9e', '2014-12-04 12:17:12', NULL, 0, 0, NULL, 0, 0, '1', '', '343223232', '', '', '', '', '1', '2'),
+	('14120822363416177039', '7777', 'adb72b256f38df9e', '2014-12-08 22:36:34', NULL, 0, 0, NULL, 0, 1, '1', '', '', '', '', '', '', '1', '2'),
+	('14120822370670006505', 'eee', '6b125258f35b1c48', '2014-12-09 22:36:54', NULL, 0, 0, NULL, 0, 0, '2', '', '', '', '', '', '', '2', '1'),
+	('14120822404043170049', '111111111111', '5f7158ade4c8d299', '2014-12-16 22:39:58', NULL, 0, 0, NULL, 0, 1, '1', '1111', '1111', '111111', '1111', '111', '', '1', '2');
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
