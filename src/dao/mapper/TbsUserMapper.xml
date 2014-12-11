@@ -411,6 +411,9 @@
 		<if test="isAdmin != null " >
 			and isAdmin like  &apos;%${isAdmin}%&apos;
 		</if>
+		<if test="dept_id != null " >
+			and dept_id = #{dept_id},
+		</if>
 	</trim>
 </sql>
 
