@@ -382,13 +382,13 @@
 <sql id="andOtherAllLike">
 	<trim  suffixOverrides="," >
 		<if test="id != null and id != '' " >
-			and id like  &apos;%${id}%&apos;
+			and id =  #{id}
 	    </if>
 		<if test="username != null and username != '' " >
 			and username like  &apos;%${username}%&apos;
 	    </if>
 		<if test="password != null and password != '' " >
-			and password like  &apos;%${password}%&apos;
+			and password = #{password},
 	    </if>
 		<if test="createTime != null " >
 			and createTime like  &apos;%${createTime}%&apos;
@@ -397,19 +397,19 @@
 			and ip like  &apos;%${ip}%&apos;
 	    </if>
 		<if test="count != null " >
-			and count like  &apos;%${count}%&apos;
+			and count = #{count},
 		</if>
 		<if test="isLock != null " >
-			and isLock like  &apos;%${isLock}%&apos;
+			and isLock = #{isLock},
 		</if>
 		<if test="lockTime != null " >
 			and lockTime like  &apos;%${lockTime}%&apos;
 		</if>
 		<if test="failCount != null " >
-			and failCount like  &apos;%${failCount}%&apos;
+			and failCount = #{failCount},
 		</if>
 		<if test="isAdmin != null " >
-			and isAdmin like  &apos;%${isAdmin}%&apos;
+			and isAdmin = #{isAdmin},
 		</if>
 		<if test="dept_id != null " >
 			and dept_id = #{dept_id},
