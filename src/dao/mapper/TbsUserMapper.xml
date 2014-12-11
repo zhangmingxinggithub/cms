@@ -428,16 +428,6 @@
 </sql>
 
 
-<!-- 自定义查询 -->
-<sql id="sql">
-   <if test="sql != null and sql !=''">
-       ${sql}
-   </if>
-   <if test="sql == null || sql==''">
-      select <include refid="tbaleColumns"/> from TbsUser <include refid="where"/>
-   </if>
-</sql>
-
 <!-- 查询条件 -->
 <sql id="queryCondition">
      <if test="queryCondition != null and queryCondition != ''">
@@ -450,7 +440,6 @@
 <insert id="insert"  parameterType="model.TbsUserModel" >
     insert into TbsUser(<include refid="insertColumns"/>) values(<include refid="insertParams"/>);
 </insert>
-
 
 
 <!-- 删除,主键删除   -->
