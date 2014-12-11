@@ -21,17 +21,15 @@ public interface TbsUserMapper  {
 	/************************** 图表 **************************/
 	public List<Map<?,?>> charts(Map<?,?> map) throws SQLException;
 	
-	/***********************分页查询操作************************/
 	public Integer selectByModelCount(TbsUserModel  model) throws Exception;
 	public List<TbsUserModel> selectByModel(TbsUserModel model) throws Exception;
-	public Integer insert(TbsUserModel t) throws Exception;
 	
+	public Integer insert(TbsUserModel t) throws Exception;
 	public Integer updateByPrimaryKey(TbsUserModel t) throws Exception;
 	public Integer deleteByPrimaryKey(Object key) throws Exception;
-	
 	public TbsUserModel selectByPrimaryKey(Object key) throws Exception;
 
-	/*****************CRUD操作********************/
+	
 	public List<TbsUserModel> selectByMap(Map<?, ?>  map) throws Exception;
 	
 }
