@@ -1,4 +1,12 @@
 package dao;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import model.TbsUserModel;
+
+
 /**
  * 
  * <br>
@@ -7,6 +15,23 @@ package dao;
  * <b>日期：</b> 2013-5-24 <br>
  * <b>版权所有：<b>版权所有(C) 2011，QQ 405645010<br>
  */
-public interface TbsUserMapper<T> extends BaseMapper<T> {
+public interface TbsUserMapper  {
 	public java.util.List<java.util.Map<String,Object>> selectByRoleUrls(java.util.Map<?,?> map) throws Exception;
+
+	/************************** 图表 **************************/
+	public List<Map<?,?>> charts(Map<?,?> map) throws SQLException;
+	
+	/***********************分页查询操作************************/
+	public Integer selectByModelCount(TbsUserModel  model) throws Exception;
+	public List<TbsUserModel> selectByModel(TbsUserModel model) throws Exception;
+	public Integer insert(TbsUserModel t) throws Exception;
+	
+	public Integer updateByPrimaryKey(TbsUserModel t) throws Exception;
+	public Integer deleteByPrimaryKey(Object key) throws Exception;
+	
+	public TbsUserModel selectByPrimaryKey(Object key) throws Exception;
+
+	/*****************CRUD操作********************/
+	public List<TbsUserModel> selectByMap(Map<?, ?>  map) throws Exception;
+	
 }

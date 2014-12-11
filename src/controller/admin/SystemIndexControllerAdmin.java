@@ -67,7 +67,7 @@ public class SystemIndexControllerAdmin extends BaseController {
 	private StringBuffer sb = new StringBuffer();
 
 	@Autowired
-	private TbsUserService<TbsUserModel> tbsUserService;
+	private TbsUserService tbsUserService;
 	@Autowired
 	private TbsMenuService<TbsMenuModel> tbsMenuService;
 	@Autowired

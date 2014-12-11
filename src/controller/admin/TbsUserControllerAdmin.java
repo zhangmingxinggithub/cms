@@ -51,7 +51,7 @@ public class TbsUserControllerAdmin extends BaseController{	private final static
 
 	// 服务类
 	@Autowired(required=false) //自动注入，不需要生成set方法了，required=false表示没有实现类，也不会报错。
-	private TbsUserService<TbsUserModel> tbsUserService; 
+	private TbsUserService tbsUserService; 
 	
 	@Autowired(required=false) //自动注入，不需要生成set方法了，required=false表示没有实现类，也不会报错。
 	private TbsDepartMentService<TbsDepartMentModel> departMentService; 
