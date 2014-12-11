@@ -422,11 +422,6 @@
      where 1=1
 </sql>
 
-<!-- columnKey  主键 列名称 ,视图获取不到主键 需要设置 -->
-<sql id="columnKey">
-     and id=#{id}
-</sql>
-
 
 <!-- 查询条件 -->
 <sql id="queryCondition">
@@ -450,7 +445,7 @@
 
 <!-- 修改,主键更新  -->
 <update id="updateByPrimaryKey" parameterType="model.TbsUserModel" >
-	update TbsUser <set><include refid="updateParams"/></set><include refid="where"/><include refid="columnKey"/>
+	update TbsUser <set><include refid="updateParams"/></set> where id=#{id}
 </update>
 
 
