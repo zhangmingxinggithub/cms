@@ -55,7 +55,6 @@
 </sql>
 
 <!-- tbaleColumns  所有列 -->
-<!--  id,name,password,nickName,email,icon,state,time,count,createTime,remark -->
 <sql id="tbaleColumns">
 	<trim suffix="" suffixOverrides=",">
 		id,username,password,createTime,ip,count,isLock,
@@ -468,9 +467,6 @@
 	select <include refid="tbaleColumns"/> from TbsUser <include refid="where"/> <include refid="columnKey"/>
 </select>
 
-
-
-
   	
 <!-- 查询 ,总行数,分页 ,模型 -->
 <select id="selectByModelCount" resultType="java.lang.Integer"  parameterType="model.TbsUserModel">
@@ -511,14 +507,7 @@
 
 <!--/////////////// 级联递归查询  一对多 ///////////////-->
 <resultMap type="model.TbsUserModel" id="tableMapToModelChild" extends="tableMapToModel">
-  
-   <!-- 一对一关联   注意 顺序       需要用时开启 -->
-   <!--  
-  <association property="tbsUserModel" column="parentId" select="getParent">
-  		 
-  </association>
-  -->
-  
+ 
   <!-- 一对多关联  -->
   <collection property="listTbsUserModel" column="id" select="getChild">
       <!-- 对象的属性 -->
